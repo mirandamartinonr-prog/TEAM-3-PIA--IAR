@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Stage 4 — PIA Project · Group 217 · Team 3</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --pink:#f472b6;--pink-light:#fce7f3;--pink-mid:#fbcfe8;
+      --blue:#38bdf8;--blue-light:#e0f2fe;--blue-mid:#bae6fd;
+      --navy:#0c4a6e;--bg:#f0f9ff;--white:#ffffff;
+      --text:#1e3a5f;--muted:#64748b;--nav-h:68px;
+    }
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;font-size:16px;line-height:1.75}
+    body::before{content:'';position:fixed;top:-200px;right:-200px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,#fbcfe8,transparent 70%);opacity:.45;pointer-events:none;z-index:0}
+    body::after{content:'';position:fixed;bottom:-200px;left:-200px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,#bae6fd,transparent 70%);opacity:.45;pointer-events:none;z-index:0}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);background:rgba(255,255,255,.9);backdrop-filter:blur(16px);border-bottom:2px solid var(--pink-mid);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;box-shadow:0 2px 20px rgba(244,114,182,.12)}
+    .nav-brand{font-weight:900;font-size:.9rem;background:linear-gradient(135deg,var(--blue),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap}
+    .nav-links{display:flex;gap:.1rem;list-style:none;flex-wrap:wrap}
+    .nav-links a{font-size:.75rem;font-weight:700;color:var(--muted);text-decoration:none;padding:.28rem .6rem;border-radius:99px;transition:all .2s}
+    .nav-links a:hover{color:#fff;background:linear-gradient(135deg,var(--blue),var(--pink))}
+
+    /* LAYOUT */
+    .wrap{max-width:960px;margin:0 auto;padding:0 2rem;position:relative;z-index:1}
+    section{padding:calc(var(--nav-h) + 4rem) 0 5rem}
+    section+section{padding-top:3.5rem}
+
+    /* BADGES */
+    .badge{display:inline-block;padding:.28rem .9rem;border-radius:99px;font-size:.7rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;margin-bottom:1.2rem}
+    .bp{background:var(--pink-light);color:#be185d}
+    .bb{background:var(--blue-light);color:#0369a1}
+
+    /* TYPE */
+    h1{font-family:'Playfair Display',serif;font-size:clamp(1.9rem,4.5vw,3rem);font-weight:900;color:var(--navy);line-height:1.15;margin-bottom:1rem}
+    h2{font-size:1.25rem;font-weight:800;color:var(--navy);margin:2rem 0 .6rem}
+    h3{font-size:1rem;font-weight:700;color:#0369a1;margin:1.2rem 0 .35rem}
+    p{margin-bottom:.9rem;color:var(--text)}
+    b,strong{color:var(--navy)}
+    em{color:#7c3aed}
+    .grad{background:linear-gradient(135deg,var(--blue),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+    /* HERO */
+    #home{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-top:var(--nav-h)}
+    .hero-card{background:var(--white);border-radius:24px;padding:3rem;box-shadow:0 8px 40px rgba(56,189,248,.15),0 0 0 1px var(--blue-mid);position:relative;overflow:hidden}
+    .hero-card::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,var(--pink-light),transparent 70%)}
+    .hero-sub{font-size:1rem;font-weight:700;color:var(--blue);margin-bottom:.5rem;letter-spacing:.04em}
+    .meta-row{display:flex;gap:1rem;flex-wrap:wrap;margin-top:2rem}
+    .meta-box{background:var(--blue-light);border-radius:12px;padding:.75rem 1.3rem;display:flex;flex-direction:column}
+    .meta-lbl{font-size:.68rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#0369a1}
+    .meta-val{font-size:1.05rem;font-weight:900;color:var(--navy)}
+    .pills{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:2rem}
+    .pill{padding:.42rem 1rem;border-radius:99px;font-weight:700;font-size:.8rem;text-decoration:none;transition:all .25s}
+    .pp{background:var(--pink-light);color:#be185d}.pp:hover{background:var(--pink);color:#fff}
+    .pb{background:var(--blue-light);color:#0369a1}.pb:hover{background:var(--blue);color:#fff}
+
+    /* CARDS */
+    .card{background:var(--white);border-radius:18px;padding:1.8rem;box-shadow:0 4px 24px rgba(56,189,248,.09);margin-bottom:1.4rem;border:1px solid var(--blue-mid)}
+    .card-p{border-color:var(--pink-mid);box-shadow:0 4px 24px rgba(244,114,182,.09)}
+    .divider{border:none;border-top:2px dashed var(--pink-mid);margin:2.5rem 0}
+
+    /* IMAGES */
+    .img-full{width:100%;border-radius:16px;object-fit:cover;margin:1.2rem 0;box-shadow:0 4px 20px rgba(0,0,0,.1);display:block}
+    .img-half{width:48%;border-radius:14px;object-fit:cover;box-shadow:0 4px 16px rgba(0,0,0,.1)}
+    .img-row{display:flex;gap:1rem;flex-wrap:wrap;margin:1.2rem 0;align-items:flex-start}
+    .img-portrait{width:160px;height:160px;border-radius:50%;object-fit:cover;border:4px solid var(--pink-mid);box-shadow:0 4px 16px rgba(244,114,182,.2);flex-shrink:0}
+
+    /* VIDEO */
+    .video-wrap{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:16px;margin:1.5rem 0;box-shadow:0 6px 30px rgba(56,189,248,.18)}
+    .video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
+
+    /* LISTS */
+    ul.nice,ol.nice{padding-left:1.4rem;margin:.6rem 0 1rem}
+    ul.nice li,ol.nice li{margin-bottom:.45rem;color:var(--text)}
+    ul.nice li::marker{color:var(--pink)}
+
+    /* TABLE */
+    .tbl{width:100%;border-collapse:collapse;margin:1.2rem 0;font-size:.87rem}
+    .tbl th{padding:.6rem .9rem;background:linear-gradient(135deg,var(--blue-light),var(--pink-light));color:var(--navy);font-weight:800;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;border-bottom:2px solid var(--pink-mid);text-align:left}
+    .tbl td{padding:.6rem .9rem;border-bottom:1px solid var(--blue-light);color:var(--text);vertical-align:top}
+    .tbl tr:last-child td{border-bottom:none}
+    .tbl tr:hover td{background:var(--pink-light)}
+    .tid{font-weight:800;color:var(--pink)}
+
+    /* CHIPS */
+    .chips{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0}
+    .chip{padding:.35rem .9rem;border-radius:99px;font-size:.8rem;font-weight:700}
+    .chp{background:var(--pink-light);color:#be185d}
+    .chb{background:var(--blue-light);color:#0369a1}
+
+    /* FLOW */
+    .flow{background:linear-gradient(135deg,var(--blue-light),var(--pink-light));border-radius:16px;padding:1.6rem;margin:1.5rem 0}
+    .fs{display:flex;align-items:flex-start;gap:.75rem;margin-bottom:.45rem}
+    .fa{color:var(--pink);font-weight:900;font-size:1.05rem;flex-shrink:0;margin-top:.05rem}
+    .ft{font-weight:600;color:var(--navy);font-size:.9rem}
+
+    /* CONCLUSION */
+    .conc{background:var(--white);border-radius:18px;padding:1.6rem;margin-bottom:1.4rem;box-shadow:0 4px 20px rgba(244,114,182,.1);border:1px solid var(--pink-mid);display:flex;gap:1.4rem;align-items:flex-start}
+    .conc-info .name{font-weight:900;color:var(--navy);font-size:1rem;margin-bottom:.2rem}
+    .conc-info .id{font-size:.75rem;color:var(--muted);font-weight:700;letter-spacing:.08em;margin-bottom:.7rem}
+    .conc-info p{font-size:.92rem;margin:0;color:var(--text)}
+
+    /* BIB */
+    .bibs{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem}
+    .bib{padding:.42rem .9rem;border-radius:10px;font-size:.8rem;font-weight:700;text-decoration:none;background:var(--pink-light);color:#be185d;border:1px solid var(--pink-mid);transition:all .2s}
+    .bib:hover{background:var(--pink);color:#fff}
+
+    /* HYPO */
+    .hypo{background:linear-gradient(135deg,var(--blue-light),var(--pink-light));border-radius:16px;padding:1.5rem 1.8rem;margin:1.5rem 0;border-left:4px solid var(--blue)}
+
+    footer{text-align:center;padding:2rem;border-top:2px solid var(--pink-mid);color:var(--muted);font-size:.8rem;font-weight:700;background:var(--white);position:relative;z-index:1}
+
+    @media(max-width:700px){
+      .nav-links{display:none}
+      .img-row{flex-direction:column}
+      .img-half{width:100%}
+      .conc{flex-direction:column;align-items:center;text-align:center}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-brand">CIDEB · Group 217 · Team 3</span>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#research">Research Data</a></li>
+    <li><a href="#problems">Problems</a></li>
+    <li><a href="#robotic">Robotic Solution</a></li>
+    <li><a href="#programming">Programming</a></li>
+    <li><a href="#journey">Journey</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+    <li><a href="#team">Team</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════ HOME ══════════ -->
+<section id="home">
+<div class="wrap">
+  <div class="hero-card">
+    <p class="hero-sub">CIDEB · UANL · Stage 4 · PIA Project · Group 217 · Team 3</p>
+    <h1>Muscular System <span class="grad">and Fibromyalgia</span></h1>
+    <p>Welcome to our <b>Stage 4 PIA Project</b> website We are Team 3 from Group 217 at CIDEB, Universidad Autónoma de Nuevo León. In this project, we investigated the <b>Muscular System</b> one of the most essential systems in the human body, responsible for every movement we make, from breathing to running.</p>
+    <p>Our research focused on <b>Fibromyalgia</b>, a chronic condition characterized by widespread muscle pain, fatigue, and tenderness throughout the body. Although it doesn't directly damage the muscles, it alters how the brain processes pain signals, leading to constant discomfort and seriously impacting quality of life.</p>
+    <p>To address this problem, our team designed a robotic solution: a <b>nano-bio-robot</b> that travels through the bloodstream via the arteries to reach the affected muscle tissue and release analgesics in a controlled manner targeting only the painful area rather than numbing the entire body. This website documents our full research, programming, robotic design, and team journey throughout the semester.</p>
+    <p>Through this project we developed skills in <b>programming, robotics, biology, and teamwork</b> combining science and technology to propose an innovative solution to a real health problem. Our topic is the <b>Muscular System and Fibromyalgia</b>.</p>
+    <div class="meta-row">
+      <div class="meta-box"><span class="meta-lbl">Group</span><span class="meta-val">217</span></div>
+      <div class="meta-box"><span class="meta-lbl">Team</span><span class="meta-val">3</span></div>
+      <div class="meta-box"><span class="meta-lbl">System</span><span class="meta-val">Muscular</span></div>
+      <div class="meta-box"><span class="meta-lbl">Problem</span><span class="meta-val">Fibromyalgia</span></div>
+      <div class="meta-box"><span class="meta-lbl">School</span><span class="meta-val">CIDEB · UANL</span></div>
+    </div>
+    <div class="pills">
+      <a class="pill pb" href="#research">Research Data</a>
+      <a class="pill pp" href="#problems">Problems</a>
+      <a class="pill pb" href="#robotic">Robotic Solution</a>
+      <a class="pill pp" href="#programming">Programming</a>
+      <a class="pill pb" href="#journey">Journey</a>
+      <a class="pill pp" href="#conclusion">Conclusion</a>
+      <a class="pill pb" href="#team">Team</a>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════ RESEARCH DATA ══════════ -->
+<section id="research">
+<div class="wrap">
+  <span class="badge bb">01 — Research Data</span>
+  <h1>The Muscular System</h1>
+  <p>Muscle problems can affect many people and range from mild issues like cramps to serious chronic disorders. These conditions can interfere with daily movement, physical performance, and overall quality of life. Some muscle problems are temporary and easy to treat, while others are long-term and more complex, such as inflammatory muscle diseases and fibromyalgia. Understanding these problems is important because many symptoms can be similar, and correct identification helps choose the best treatment.</p>
+  <p>The muscular system is <b>fundamental for movement and the overall functioning of the body</b>, as it allows us to perform everything from basic activities to complex movements. It works together with the skeletal and nervous systems to produce coordinated action throughout the body.</p>
+
+  <img class="img-full" src="poster.jpeg" alt="Stage 2 Poster — Muscular System · Group 217 Team 3"/>
+
+  <h2>Identify Problems or Illness</h2>
+  <table class="tbl">
+    <thead><tr><th>Problem</th><th>Description</th><th>Treatment</th></tr></thead>
+    <tbody>
+      <tr><td><b>Muscle Weakness</b></td><td>Loss of strength, difficulty doing activities, pain when using the affected muscle, difficulty with balance, trembling.</td><td>Physical therapy, strengthening exercises, treat underlying cause, vitamin supplementation, assistive devices.</td></tr>
+      <tr><td><b>Muscle Strains</b></td><td>A twist or pull that stretches or tears a muscle or tendon. Symptoms: pain, muscle spasms, swelling, trouble moving.</td><td>R.I.C.E. (Rest, Ice, Compression, Elevation), anti-inflammatory medication, gentle stretching, physical therapy.</td></tr>
+      <tr><td><b>Tendinitis</b></td><td>Severe swelling of a tendon that occurs after repeated injury to an area.</td><td>Rest, ice, anti-inflammatory drugs, physical therapy, braces, corticosteroid injections.</td></tr>
+      <tr><td><b>Muscle Cramps</b></td><td>Sudden, involuntary spasms in one or more muscles.</td><td>Stretching, gently massaging, applying heat/ice, fluids if dehydrated.</td></tr>
+      <tr><td><b>Elevated Muscle Enzymes</b></td><td>Indicate recent muscle damage, inflammation, or stress.</td><td>Treat underlying cause, rest, hydration, monitor levels, IV fluids in severe cases.</td></tr>
+      <tr><td><b>Inflammatory Myopathy</b></td><td>Rare autoimmune diseases causing chronic muscle inflammation and progressive weakness in hips, shoulders and neck.</td><td>Corticosteroids, immunosuppressive drugs, physical therapy, IV immunoglobulin.</td></tr>
+      <tr><td><b>Myositis</b></td><td>Inflammation of muscles used to move the body. Fatigue after walking, tripping, trouble swallowing or breathing.</td><td>Anti-inflammatory medication, corticosteroids, immunosuppressants, supervised physical therapy.</td></tr>
+      <tr><td><b>Fibromyalgia</b></td><td>Chronic pain and stiffness all over the body (aching or burning), muscle and joint stiffness, numbness, sensitivity, fatigue, trouble sleeping.</td><td>Pain relievers, antidepressants, anti-seizure medicines, sleep, physical activity, yoga, tai chi, massage, acupuncture.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="img-row">
+    <img class="img-half" src="robot1.png" alt="BullBot robot — component view"/>
+    <img class="img-half" src="robot2.png" alt="BullBot robot — full view"/>
+  </div>
+
+  <hr class="divider"/>
+  <p><b>Bibliography — External References</b></p>
+  <div class="bibs">
+    <a class="bib" href="https://www.hss.edu/health-library/conditions-and-treatments/list/muscle-disorders" target="_blank">Hospital for Special Surgery ↗</a>
+    <a class="bib" href="https://medlineplus.gov/fibromyalgia.html" target="_blank">MedlinePlus · Fibromyalgia ↗</a>
+    <a class="bib" href="https://medlineplus.gov/musclecramps.html" target="_blank">MedlinePlus · Muscle Cramps ↗</a>
+    <a class="bib" href="https://medlineplus.gov/tendinitis.html" target="_blank">MedlinePlus · Tendinitis ↗</a>
+    <a class="bib" href="https://medlineplus.gov/myositis.html" target="_blank">MedlinePlus · Myositis ↗</a>
+    <a class="bib" href="https://inforeuma.com/enfermedades-reumaticas/fibromialgia/" target="_blank">Inforeuma · SER ↗</a>
+    <a class="bib" href="https://www.mayoclinic.org/es/diseases-conditions/fibromyalgia/symptoms-causes/syc-20354780" target="_blank">Mayo Clinic ↗</a>
+  </div>
+</div>
+</section>
+
+<!-- ══════════ PROBLEMS ══════════ -->
+<section id="problems">
+<div class="wrap">
+  <span class="badge bp">02 — Problems</span>
+  <h1>Fibromyalgia</h1>
+  <p>One common muscular disorder is <b>fibromyalgia</b>. Fibromyalgia is a chronic condition that causes widespread pain and stiffness throughout the body. The pain is often described as aching or burning and can affect both muscles and joints. People with fibromyalgia may also experience numbness or tingling in their limbs, extreme fatigue, and difficulty sleeping.</p>
+
+  <div class="card card-p">
+    <h2>What Is Fibromyalgia?</h2>
+    <p>Fibromyalgia is described as a condition characterized by <b>chronic pain and stiffness all over the body</b>. The condition presents a complex set of symptoms including extreme fatigue and sleep disorders, which affect <em>70% to 80% of patients</em> and result in "non-restorative" sleep — meaning patients wake up tired regardless of how long they slept.</p>
+    <p>Another important characteristic of fibromyalgia is <b>increased sensitivity to external factors</b> such as temperature, pressure, or touch. This condition does not directly damage the muscles, but it affects how the nervous system processes pain signals, making discomfort constant and difficult to manage.</p>
+  </div>
+
+  <h2>Symptoms</h2>
+  <div class="chips">
+    <span class="chip chp">Chronic widespread pain</span>
+    <span class="chip chp">Muscle &amp; joint stiffness</span>
+    <span class="chip chb">Extreme fatigue</span>
+    <span class="chip chb">Non-restorative sleep</span>
+    <span class="chip chp">Numbness in limbs</span>
+    <span class="chip chb">Sensory sensitivity</span>
+    <span class="chip chp">Fibro fog</span>
+    <span class="chip chb">Anxiety &amp; depression</span>
+    <span class="chip chp">Irritable bowel syndrome</span>
+  </div>
+
+  <ul class="nice">
+    <li><b>Physical sensations:</b> Patients experience stiffness in both muscles and joints, as well as numbness in their limbs.</li>
+    <li><b>Sensory sensitivity:</b> There is a noted sensitivity to external factors such as temperature, pressure, and touch.</li>
+    <li><b>Energy and sleep:</b> The condition is associated with fatigue and tiredness, along with trouble sleeping.</li>
+    <li><b>Cognitive difficulties:</b> Often called <em>"fibro fog"</em> — impairs the ability to focus, pay attention, and concentrate.</li>
+    <li><b>Co-occurring conditions:</b> It is common to also suffer from irritable bowel syndrome, anxiety, and depression.</li>
+  </ul>
+  <h3>Treatment Options</h3>
+  <ol class="nice">
+    <li>Pain relievers and anti-inflammatory medication</li>
+    <li>Antidepressants and anti-seizure medicines</li>
+    <li>Regular physical activity, yoga and tai chi</li>
+    <li>Physical therapy and massage therapy</li>
+    <li>Stress management and healthy sleep habits</li>
+    <li>Acupuncture and alternative therapies</li>
+  </ol>
+
+  <div class="hypo">
+    <h2 style="margin-top:0">Hypothesis</h2>
+    <p style="margin:0">If fibromyalgia affects muscle tissue and causes chronic pain and affects sensitivity in the limbs, then we may be able to come up with a temporary treatment that may last in the long run — such as <b>pain killers to numb the pain</b>. We can also use exercise to jump-start and give the body something to react to.</p>
+  </div>
+
+  <h2>Treatment</h2>
+  <p>Treatment for fibromyalgia usually focuses on <b>reducing symptoms</b> rather than curing the condition completely. Common treatments include pain relievers, antidepressants, and anti-seizure medications that help reduce pain sensitivity. Lifestyle changes are also important, such as getting enough sleep, managing stress, and doing regular physical activity. Exercises like <em>stretching, yoga, and tai chi</em> can help reduce stiffness and improve movement. Some patients also benefit from physical therapy, massage therapy, or acupuncture.</p>
+
+  <div class="img-row">
+    <img class="img-half" src="robot_track.jpeg" alt="Robot navigating the arterial track"/>
+    <img class="img-half" src="poster.jpeg" alt="Circulatory pathway poster"/>
+  </div>
+</div>
+</section>
+
+<!-- ══════════ ROBOTIC SOLUTION ══════════ -->
+<section id="robotic">
+<div class="wrap">
+  <span class="badge bb">03 — Robotic Solution</span>
+  <h1>Nano-Robot Vehicle</h1>
+  <p>Our solution requires a <b>nano-bio-robot</b> capable of traveling through the bloodstream via the arteries due to its small size. These nano-bio-robots are used to reach the area of chronic pain and <b>release analgesics in a controlled manner</b>, calming the pain in the affected area and avoiding common analgesics that would numb the entire body instead of just the affected area.</p>
+
+  <div class="card">
+    <h2>Why the Arteries?</h2>
+    <p>The arteries carry oxygenated blood and nutrients <em>away from the heart</em> toward the muscles and organs. By entering the arterial system, our robot can travel directly to the muscle tissue affected by fibromyalgia and release pain-relief medication <b>precisely where it's needed</b> — without affecting the rest of the body. This targeted delivery makes the treatment far more effective than traditional oral analgesics.</p>
+  </div>
+
+  <div class="img-row">
+    <img class="img-half" src="robot1.png" alt="BullBot — internal circuit components"/>
+    <img class="img-half" src="robot2.png" alt="BullBot — full robot view"/>
+  </div>
+  <img class="img-full" src="robot_track.jpeg" alt="Robot navigating the circulatory track simulation"/>
+
+  <h2>Robot Components</h2>
+  <ul class="nice">
+    <li><b>BullBot Platform:</b> Wheeled robot that navigates the track representing arterial pathways through the body.</li>
+    <li><b>DC Motors:</b> Control forward, backward, and turning movement through each pathway segment.</li>
+    <li><b>Servo Motor:</b> Operates a claw mechanism to simulate releasing analgesics at the target muscle location.</li>
+    <li><b>IR Remote Control:</b> Allows manual control during the RC stage using infrared signal input from the 8Key remote.</li>
+    <li><b>8Key Controller (Roborobo):</b> Interface board used for remote input during RC movement stages.</li>
+    <li><b>ROGIC Board:</b> The brain of the robot — receives and executes the programmed sequential actions.</li>
+  </ul>
+</div>
+</section>
+
+<!-- ══════════ PROGRAMMING ══════════ -->
+<section id="programming">
+<div class="wrap">
+  <span class="badge bp">04 — Programming</span>
+  <h1>Algorithm &amp; Implementation</h1>
+  <p>Our team used <b>two different programming approaches</b> for this project: a fully automatic sequential program for the Scenario stage, and a remote-control program for the RC stage. Both were built using <em>ROGIC</em>, a visual block-based programming environment for the BullBot robot.</p>
+
+  <hr class="divider"/>
+
+  <h2>Scenario — Sequential Programming</h2>
+  <p>The scenario program runs <b>automatically from start to finish</b> using sequential structures — no remote needed. The robot follows a fixed path through the arterial track and releases the analgesics at the target muscle. Every action is coded with DC Motor commands and Delays to control timing precisely.</p>
+
+  <div class="img-row">
+    <img class="img-half" src="rogic_new1.png" alt="Scenario ROGIC Code — Part 1"/>
+    <img class="img-half" src="rogic_new2.png" alt="Scenario ROGIC Code — Part 2"/>
+  </div>
+
+  <h2>Scenario Flowchart</h2>
+  <div class="img-row">
+    <img class="img-half" src="flowchart.png" alt="Flowchart Part 1"/>
+    <img class="img-half" src="flowchart2.png" alt="Flowchart Part 2"/>
+  </div>
+
+  <div class="flow">
+    <div class="fs"><span class="fa">▶</span><span class="ft">START</span></div>
+    <div class="fs"><span class="fa">↓</span><span class="ft">DC Motor FF → Move forward · Delay 0.7s</span></div>
+    <div class="fs"><span class="fa">↓</span><span class="ft">DC Motor 00 → Stop · Delay 0.3s</span></div>
+    <div class="fs"><span class="fa">↓</span><span class="ft">DC Motor 0F → Turn · Delay 0.6s</span></div>
+    <div class="fs"><span class="fa">↓</span><span class="ft">DC Motor 00 → Stop · Delay 0.3s</span></div>
+    <div class="fs"><span class="fa">↓</span><span class="ft">DC Motor FF → Move forward · Delay 1.5s</span></div>
+    <div class="fs"><span class="fa">↓</span><span class="ft">DC Motor 00 → Stop · Delay 0.6s</span></div>
+    <div class="fs"><span class="fa">↓</span><span class="ft">DC Motor 0F → Turn · Delay 0.5s</span></div>
+    <div class="fs"><span class="fa">↓</span><span class="ft">DC Motor FF → Move forward · Delay 0.6s</span></div>
+    <div class="fs"><span class="fa">↓</span><span class="ft">DC Motor 00 → Stop · Delay 0.3s</span></div>
+    <div class="fs"><span class="fa">↓</span><span class="ft">Servo → Position 4 (Claw opens — analgesics released) · Delay 1.0s</span></div>
+    <div class="fs"><span class="fa">⏹</span><span class="ft">Voice Port 5 → END</span></div>
+  </div>
+
+  <hr class="divider"/>
+
+  <h2>RC — Remote Control Programming</h2>
+  <p>The RC program uses a <b>While (∞) infinite loop</b> combined with <em>IR R/C infrared buttons</em>. Each button on the 8Key remote triggers a different robot action — forward, turn, servo claw, etc. — allowing real-time manual control through the track. This simulates a surgeon remotely guiding a nano-robot inside the body.</p>
+
+  <div class="img-row">
+    <img class="img-half" src="rc1.jpeg" alt="RC ROGIC Code — Part 1"/>
+    <img class="img-half" src="rc2.jpeg" alt="RC ROGIC Code — Part 2"/>
+  </div>
+  <img class="img-full" src="rc3.jpeg" alt="RC ROGIC Code — Part 3"/>
+
+  <div class="flow">
+    <div class="fs"><span class="fa">▶</span><span class="ft">START → While (∞) loop begins</span></div>
+    <div class="fs"><span class="fa">↓</span><span class="ft">IR R/C Button 2 → Voice Port 5 activated → Delay 1.0s → OFF Port 5</span></div>
+    <div class="fs"><span class="fa">↓</span><span class="ft">IR R/C Button 1 → DC Motor FF (Move Forward)</span></div>
+    <div class="fs"><span class="fa">↓</span><span class="ft">IR R/C Button 4 → DC Motor F0 (Turn right)</span></div>
+    <div class="fs"><span class="fa">↓</span><span class="ft">IR R/C Button 3 → DC Motor 0F (Turn left)</span></div>
+    <div class="fs"><span class="fa">↓</span><span class="ft">IR R/C Button 6 → Servo 1 2 (Claw opens — analgesics released)</span></div>
+    <div class="fs"><span class="fa">↓</span><span class="ft">IR R/C Button 4 → DC Motor BB (Backward) → DC Motor 00 (Stop)</span></div>
+    <div class="fs"><span class="fa">⏹</span><span class="ft">Loop continues until manually stopped</span></div>
+  </div>
+
+  <h2>AI Prompts Used to Create This Page</h2>
+  <div class="card card-p">
+    <center><b>These are the prompts we used with AI to help build this website:</b></center><br/>
+    <ol class="nice">
+      <li><em>"Help me to divide the web page in 8 sections: Home, Research Data, Problems, Robotic Solution, Programming, Journey, Conclusion and Team."</em></li>
+      <li><em>"Help me to improve my HTML code, add colors, fonts and styling to make it look professional."</em></li>
+      <li><em>"How to upload a file in GitHub and how to activate GitHub Pages to publish my website."</em></li>
+      <li><em>"Help me add the flowchart, ROGIC code images, and YouTube videos of our robot to the Programming and Journey sections."</em></li>
+    </ol>
+  </div>
+
+  <h2>Robot Picture</h2>
+  <div class="img-row">
+    <img class="img-half" src="robot1.png" alt="Robot — internal components"/>
+    <img class="img-half" src="robot_track.jpeg" alt="Robot on the track"/>
+  </div>
+</div>
+</section>
+
+<!-- ══════════ JOURNEY ══════════ -->
+<section id="journey">
+<div class="wrap">
+  <span class="badge bb">05 — Journey</span>
+  <h1>Stage 3 — Scenario</h1>
+  <p>In Stage 3 we built a <b>physical track</b> representing the circulatory pathways (arteries) of the human body. Our BullBot was programmed sequentially to travel through this track, simulating how a nano-robot would move from the heart through the arteries to reach muscle tissue affected by fibromyalgia and deliver pain relief in the affected area.</p>
+  <p>The track included intersections and turns representing different vessels, and the robot had to navigate each one precisely using timed DC motor commands and delays.</p>
+
+  <img class="img-full" src="poster.jpeg" alt="Track Image — Stage 3 Scenario"/>
+
+  <h2>Scenario Video</h2>
+  <div class="video-wrap">
+    <iframe src="https://www.youtube.com/embed/ZZoqYoFSWrw" title="BullBot Scenario — Group 217 Team 3" allowfullscreen></iframe>
+  </div>
+
+  <hr class="divider"/>
+
+  <h1>RC — Remote Control Stage</h1>
+  <p>In the <b>RC phase</b> we reprogrammed the robot to respond to <em>infrared remote control signals</em> using the 8Key controller. Each button was mapped to a specific movement or action, allowing us to manually guide the robot through the arterial pathway in real time. This simulates a surgeon remotely controlling a nano-robot inside the patient's body to deliver treatment exactly where it is needed.</p>
+
+  <div class="img-row">
+    <img class="img-half" src="robot_track.jpeg" alt="Robot during RC stage on track"/>
+    <img class="img-half" src="robot2.png" alt="Robot RC — close up"/>
+  </div>
+
+  <h2>RC Video</h2>
+  <div class="video-wrap">
+    <iframe src="https://www.youtube.com/embed/TExWDTpmXRg" title="RC Robot — Group 217 Team 3" allowfullscreen></iframe>
+  </div>
+</div>
+</section>
+
+<!-- ══════════ CONCLUSION ══════════ -->
+<section id="conclusion">
+<div class="wrap">
+  <span class="badge bp">06 — Conclusion</span>
+  <h1>Team Reflections</h1>
+  <p>In conclusion, the muscular system is <b>fundamental for movement and the overall functioning of the body</b>, as it allows us to perform everything from basic activities to complex movements. However, conditions such as fibromyalgia can affect its function. Fibromyalgia is a chronic condition characterized by widespread muscle pain, fatigue, and tenderness in different parts of the body. Although it doesn't directly damage the muscles, it alters how the brain processes pain signals, leading to constant discomfort and impacting quality of life. There is no cure, but there is treatment — and our team thought of a <em>nanobio-robot</em> capable of releasing analgesic in a controlled manner and only in the affected area to relieve pain and muscle stiffness.</p>
+
+  <br/>
+
+  <!-- SOL -->
+  <div class="conc">
+    <img class="img-portrait" src="photo_sol.jpeg" alt="Sol Urrutia Pezina"/>
+    <div class="conc-info">
+      <p class="name">Urrutia Pezina Sol Scarlet</p>
+      <p class="id">ID: 2279006</p>
+      <p>In this semester I learned more about the design and programming of a motorized system using flowchart logic, DC motors, delays, a servo motor, and voice commands. The project helped us understand how automation systems work by controlling different components in sequence. Through testing and adjustments, we improved problem-solving, programming, and teamwork skills. Overall, the project achieved its objective and showed how technology and programming can be applied to create functional automated systems.</p>
+    </div>
+  </div>
+
+  <!-- MARCELO -->
+  <div class="conc">
+    <img class="img-portrait" src="photo_marcelo.png" alt="Marcelo Garza Serna"/>
+    <div class="conc-info">
+      <p class="name">Garza Serna Marcelo</p>
+      <p class="id">ID: 2279411</p>
+      <p>This semester, I learned a lot about the use of different ROGIC tools, and during the PIA I especially developed more knowledge about the muscular and circulatory systems. I also learned more about diseases that affect these systems, especially fibromyalgia. I learned that fibromyalgia is a chronic syndrome characterized by widespread musculoskeletal pain, fatigue, and sensitivity in different points of the body. Its symptoms can also cause problems with concentration, memory loss, and sleep disorders. Although fibromyalgia does not currently have a cure, there are treatments that can help relieve the pain and improve the patient's quality of life. In addition, taking good care of your health can help reduce the severity of the symptoms.</p>
+    </div>
+  </div>
+
+  <!-- MIRANDA -->
+  <div class="conc">
+    <img class="img-portrait" src="photo_miranda.jpeg" alt="Miranda Martiñón Rodriguez"/>
+    <div class="conc-info">
+      <p class="name">Martiñón Rodriguez Miranda</p>
+      <p class="id">ID: 2279588</p>
+      <p>In conclusion, the Introduction to Robotics class helped us develop a better understanding of robotics and technology through different activities and projects. We learned how robots can be programmed using Rogic and how programming allows robots to complete specific tasks and movements. Throughout the class, we gained knowledge about how robotics is used in real life and how it can be connected to different areas, including science and health topics such as the muscular system and fibromyalgia. Overall, this class helped us improve our creativity, logical thinking, and basic robotics skills while giving us more experience with technology and programming.</p>
+    </div>
+  </div>
+
+  <!-- LUCAS -->
+  <div class="conc">
+    <img class="img-portrait" src="photo_lucas.png" alt="Lucas Gonzalez Valdez"/>
+    <div class="conc-info">
+      <p class="name">Gonzalez Valdez Lucas Alan</p>
+      <p class="id">ID: 2279021</p>
+      <p>In conclusion, this project helped us understand how robotics can be connected with the circulatory system by using programmed movements and logical sequences. Through this project, we were able to simulate movement through vessels and organs, while also improving our creativity, teamwork, and programming skills. Personally, I contributed to the design of the project and helped with different ideas during the development process. Overall, this experience allowed us to learn more about how technology and science can work together, and it also helped us gain useful skills for future projects.</p>
+    </div>
+  </div>
+
+  <!-- MANUEL -->
+  <div class="conc">
+    <img class="img-portrait" src="photo_manuel.png" alt="José Manuel Meléndez Ramírez"/>
+    <div class="conc-info">
+      <p class="name">Meléndez Ramírez José Manuel</p>
+      <p class="id">ID: 2283271</p>
+      <p>In conclusion, this project allowed us to discover how robotics can help with issues such as diseases. For example, in our research, we observed how a nanobot could help with fibromyalgia, a disease characterized by intense pain in certain areas of the body. Therefore, our research focused on the muscular system, where this disease primarily affects. We also considered the circulatory system, as this is where the nanobot would be delivered.</p>
+    </div>
+  </div>
+
+  <!-- CLARA -->
+  <div class="conc">
+    <img class="img-portrait" src="photo_clara.png" alt="Clara Elin Vasconcelo González"/>
+    <div class="conc-info">
+      <p class="name">Vasconcelo González Clara Elin</p>
+      <p class="id">ID: 2278768</p>
+      <p>In conclusion, this project allowed us to discover how robotics can help with issues such as diseases. For example, in our research, we observed how a nanobot could help with fibromyalgia, a disease characterized by intense pain in certain areas of the body. Therefore, our research focused on the muscular system, where this disease primarily affects. We also considered the circulatory system, as this is where the nanobot would be delivered.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════ TEAM ══════════ -->
+<section id="team">
+<div class="wrap">
+  <span class="badge bb">07 — Team</span>
+  <h1>Team 3</h1>
+
+  <table class="tbl">
+    <thead><tr><th>Student Name</th><th>ID</th></tr></thead>
+    <tbody>
+      <tr><td><b>Vasconcelo González Clara Elin</b></td><td>2278768</td></tr>
+      <tr><td><b>Martiñón Rodriguez Miranda</b></td><td>2279588</td></tr>
+      <tr><td><b>Gonzalez Valdez Lucas Alan</b></td><td>2279021</td></tr>
+      <tr><td><b>Urrutia Pezina Sol Scarlet</b></td><td>2279006</td></tr>
+      <tr><td><b>Garza Serna Marcelo</b></td><td>2279411</td></tr>
+      <tr><td><b>Meléndez Ramírez José Manuel</b></td><td>2283271</td></tr>
+    </tbody>
+  </table>
+
+  <img class="img-full" src="team_photo.png" alt="Team 3 — Group 217"/>
+</div>
+</section>
+
+<footer>
+  CIDEB · Group 217 · Team 3 · Stage 4 PIA — HTML2026-G217T03-PIA &nbsp;·&nbsp; Universidad Autónoma de Nuevo León
+</footer>
+
+</body>
+</html>
